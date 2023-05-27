@@ -1,4 +1,15 @@
+import React from 'react';
 import { Block } from 'payload/types';
+import { Type as MediaType } from '../../collections/Media';
+import RichText from '../../components/RichText';
+
+export type Type = {
+  blockType: 'image'
+  blockName?: string
+  image: MediaType
+  caption?: any
+  type: 'normal' | 'wide' | 'fullscreen'
+}
 
 export const Image: Block = {
   slug: 'image',
@@ -48,4 +59,29 @@ export const Image: Block = {
       },
     },
   ],
+};
+
+export const Component: React.FC<Type> = (props) => {
+  const { image, type, caption } = props;
+
+  if (typeof image === 'object') {
+    let filenameToRender = image.filename;
+    if (image.sizes[type]) filenameToRender = image.sizes[type];
+
+    return (
+      <div>
+        <img
+          src={`${process.env.NEXT_PUBLIC_SERVER_URL}/media/${filenameToRender}`}
+          alt={image.alt}
+        />
+        {caption && (
+          <RichText
+            content={caption}
+          />
+        )}
+      </div>
+    );
+  }
+
+  return null;
 };

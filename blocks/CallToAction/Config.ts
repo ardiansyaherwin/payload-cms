@@ -1,95 +1,42 @@
 import { Block } from 'payload/types';
+import backgroundColor, { Type as BackgroundColorType } from '../../fields/backgroundColor';
+import link, { Type as LinkType } from '../../fields/link';
 
-type Data = Record<string, unknown>;
+export type Action = {
+  link: LinkType
+}
 
-const customURLCondition = (_: Data, siblings: Data): boolean => siblings.type === 'custom';
+export type Type = {
+  backgroundColor: BackgroundColorType
+  content: unknown
+  actions: Action[]
+}
 
-export const CallToAction: Block = {
-  slug: 'cta',
+const CallToAction: Block = {
+  slug: 'call-to-action',
   labels: {
     singular: 'Call to Action',
     plural: 'Calls to Action',
   },
   fields: [
+    backgroundColor,
     {
       name: 'content',
       type: 'richText',
+      label: 'Content',
+      required: true,
     },
     {
-      name: 'buttons',
+      name: 'actions',
+      label: 'Actions',
       type: 'array',
-      label: 'Buttons',
       minRows: 1,
       maxRows: 2,
-      labels: {
-        singular: 'Button',
-        plural: 'Buttons',
-      },
       fields: [
-        {
-          type: 'row',
-          fields: [
-            {
-              name: 'label',
-              label: 'Button Label',
-              type: 'text',
-              required: true,
-              admin: {
-                width: '50%',
-              },
-            },
-            {
-              name: 'type',
-              label: 'Button Type',
-              required: true,
-              type: 'radio',
-              defaultValue: 'page',
-              options: [
-                {
-                  label: 'Page',
-                  value: 'page',
-                },
-                {
-                  label: 'Custom URL',
-                  value: 'custom',
-                },
-              ],
-              admin: {
-                width: '50%',
-                layout: 'horizontal',
-              },
-            },
-          ],
-        },
-        {
-          name: 'page',
-          label: 'Page to link to',
-          type: 'relationship',
-          relationTo: 'pages',
-          required: true,
-          admin: {
-            condition: (_: Data, siblings: Data): boolean => siblings.type === 'page',
-          },
-        },
-        {
-          name: 'url',
-          label: 'Button URL',
-          type: 'text',
-          required: true,
-          admin: {
-            condition: customURLCondition,
-          },
-        },
-        {
-          name: 'newTab',
-          type: 'checkbox',
-          label: 'Open in new tab',
-          required: true,
-          admin: {
-            condition: customURLCondition,
-          },
-        },
+        link,
       ],
     },
   ],
 };
+
+export default CallToAction;
