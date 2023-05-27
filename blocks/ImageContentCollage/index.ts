@@ -37,6 +37,7 @@ const ImageContentCollage: Block = {
     {
       ...link,
       admin: {
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
         condition: (_, siblingData) => siblingData.enableCTA,
       },
     },

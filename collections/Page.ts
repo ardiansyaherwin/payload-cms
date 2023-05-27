@@ -91,6 +91,7 @@ export const Page: CollectionConfig = {
       relationTo: 'media',
       required: true,
       admin: {
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
         condition: (_, siblingData) => siblingData?.heroType === 'contentAboveImage' || siblingData?.heroType === 'contentLeftOfImage',
       },
     },
