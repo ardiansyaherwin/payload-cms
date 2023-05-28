@@ -1,19 +1,50 @@
 import { GlobalConfig } from 'payload/types';
-import link from '../fields/link';
+
+export type Type = {
+  links: {
+    label: string
+    url: string
+  }[]
+}
 
 const SocialMedia: GlobalConfig = {
   slug: 'social-media',
+  label: 'Social Media',
+  access: {
+    read: () => true,
+  },
   fields: [
     {
-      name: 'nav',
-      label: 'Navigation',
+      type: 'array',
+      name: 'links',
       labels: {
         singular: 'Link',
         plural: 'Links',
       },
-      type: 'array',
       fields: [
-        link,
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'label',
+              label: 'Label',
+              type: 'text',
+              required: true,
+              admin: {
+                width: '50%',
+              },
+            },
+            {
+              name: 'url',
+              label: 'URL',
+              type: 'text',
+              required: true,
+              admin: {
+                width: '50%',
+              },
+            },
+          ],
+        },
       ],
     },
   ],
