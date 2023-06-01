@@ -1,12 +1,24 @@
 import { createUseStyles } from 'react-jss';
-// import { base } from '../../../css/base';
-import { gutter } from '../../../css/structure';
+import queries from '../../../css/queries';
+import { gutterXXL, gutterXL } from '../../../css/structure';
 
 export default createUseStyles({
   left: {
-    paddingLeft: gutter,
+    paddingLeft: gutterXXL,
+    [queries.xxl]: {
+      paddingLeft: gutterXL,
+    },
+    [queries.l]: {
+      paddingLeft: 0,
+    },
   },
   right: {
-    paddingRight: gutter,
+    paddingRight: gutterXXL,
+    [queries.xxl]: {
+      paddingRight: gutterXL,
+    },
+    [queries.l]: {
+      paddingRight: 0,
+    },
   },
 });

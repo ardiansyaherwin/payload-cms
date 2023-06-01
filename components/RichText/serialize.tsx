@@ -1,26 +1,14 @@
 import React, { Fragment } from 'react';
 import escapeHTML from 'escape-html';
-import { Text } from 'slate';
+import { Text, Element as SlateElement } from 'slate';
+import RedHeadline from './leaves/RedHeadline/Component';
+import RedUnderline from './leaves/RedUnderline/Component';
 
-// eslint-disable-next-line no-use-before-define
-type Children = Leaf[]
-
-type Leaf = {
-  type: string
-  value?: {
-    url: string
-    alt: string
-  }
-  children?: Children
-  url?: string
-  [key: string]: unknown
-}
-
-const serialize = (children: Children): React.ReactElement[] => children.map((node, i) => {
+const serialize = (children: any): React.ReactElement[] => children.map((node, i: number) => {
   if (Text.isText(node)) {
     let text = <span dangerouslySetInnerHTML={{ __html: escapeHTML(node.text) }} />;
 
-    if (node.bold) {
+    if (SlateElement.isElementType(node, 'bold')) {
       text = (
         <strong key={i}>
           {text}
@@ -28,7 +16,23 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
       );
     }
 
-    if (node.code) {
+    if (node['red-headline']) {
+      text = (
+        <RedHeadline>
+          {text}
+        </RedHeadline>
+      );
+    }
+
+    if (node['red-underline']) {
+      text = (
+        <RedUnderline>
+          {text}
+        </RedUnderline>
+      );
+    }
+
+    if (SlateElement.isElementType(node, 'code')) {
       text = (
         <code key={i}>
           {text}
@@ -36,7 +40,7 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
       );
     }
 
-    if (node.italic) {
+    if (SlateElement.isElementType(node, 'italic')) {
       text = (
         <em key={i}>
           {text}
@@ -44,7 +48,7 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
       );
     }
 
-    if (node.underline) {
+    if (SlateElement.isElementType(node, 'underline')) {
       text = (
         <span
           style={{ textDecoration: 'underline' }}
@@ -55,7 +59,7 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
       );
     }
 
-    if (node.strikethrough) {
+    if (SlateElement.isElementType(node, 'strikethrough')) {
       text = (
         <span
           style={{ textDecoration: 'line-through' }}
@@ -146,6 +150,11 @@ const serialize = (children: Children): React.ReactElement[] => children.map((no
         >
           {serialize(node.children)}
         </a>
+      );
+
+    case 'hr':
+      return (
+        <hr key={i} />
       );
 
     default:

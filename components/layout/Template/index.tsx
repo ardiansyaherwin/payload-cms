@@ -1,22 +1,29 @@
 import React from 'react';
-import Footer from '../Footer';
-
 import { Type as FooterType } from '../../../globals/Footer';
 import { Type as SocialMediaType } from '../../../globals/SocialMedia';
+import Noise from '../../Noise';
+import Footer from '../Footer';
+import useStyles from './css';
 
 type Props = {
-  footer: FooterType,
-  socialMedia: SocialMediaType,
+  className?: string
+  socialMedia?: SocialMediaType
+  footer?: FooterType
 }
 
-const Template: React.FC<Props> = ({ children, footer, socialMedia }) => (
-  <React.Fragment>
-    {children}
-    <Footer
-      footer={footer}
-      socialMedia={socialMedia}
-    />
-  </React.Fragment>
-);
+const Template: React.FC<Props> = ({ children, className, footer, socialMedia }) => {
+  const { template } = useStyles();
+
+  return (
+    <div className={[className, template].filter(Boolean).join(' ')}>
+      <Noise />
+      {children}
+      <Footer
+        footer={footer}
+        socialMedia={socialMedia}
+      />
+    </div>
+  );
+};
 
 export default Template;

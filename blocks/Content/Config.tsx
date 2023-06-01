@@ -1,6 +1,7 @@
-import React from 'react';
 import { Block } from 'payload/types';
-import backgroundColor from '../../fields/backgroundColor';
+import backgroundColor, { Type as BackgroundColorType } from '../../fields/backgroundColor';
+import RedUnderline from '../../components/RichText/leaves/RedUnderline';
+import HR from '../../components/RichText/elements/HR';
 
 export type ColumnWidth = 'oneThird' | 'half' | 'twoThirds' | 'full';
 
@@ -24,6 +25,7 @@ export type Type = {
   accentLineAlignment: AccentLineAlignment
   paddingTop: PaddingSize
   paddingBottom: PaddingSize
+  backgroundColor: BackgroundColorType
 }
 
 export const Content: Block = {
@@ -104,6 +106,21 @@ export const Content: Block = {
           name: 'content',
           type: 'richText',
           required: true,
+          admin: {
+            leaves: [
+              RedUnderline,
+            ],
+            elements: [
+              'h2',
+              'h3',
+              'h4',
+              'h5',
+              'ul',
+              'ol',
+              // HR,
+              'link',
+            ],
+          },
         },
       ],
     },
@@ -129,8 +146,7 @@ export const Content: Block = {
         },
       ],
       admin: {
-        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-        condition: (_, siblingData) => siblingData.accentLine,
+        condition: (_, siblingData) => Boolean(siblingData.accentLine),
         layout: 'horizontal',
       },
     },
@@ -195,11 +211,5 @@ export const Content: Block = {
     },
   ],
 };
-
-export const Component: React.FC<Type> = () => (
-  <div>
-    Content Placeholder
-  </div>
-);
 
 export default Content;

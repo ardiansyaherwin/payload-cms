@@ -10,6 +10,7 @@ export type Type = {
 
 export const Component: React.FC<Type> = (props) => {
   const { content } = props;
+  console.log('content', content);
 
   return (
     <div className={classes.wrap}>
